@@ -1,0 +1,30 @@
+version: '2'
+services:
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:4.6
+    restart: unless-stopped
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_PASSWORD: p4ssw0rd!
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - back
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: p4ssw0rd!
+    networks:
+      - back
+networks:
+  back:
+volumes:
+  db_data:
